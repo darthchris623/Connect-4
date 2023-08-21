@@ -1,0 +1,86 @@
+body {
+    background-color: rgb(114, 113, 117);
+}
+
+button {
+    cursor: pointer;
+}
+
+.chipslot {
+    cursor: pointer;
+}
+
+#new-game-button {
+    position: relative;
+    top: 12px;
+}
+
+#gameboard {
+    border: solid 1px black;
+    width: 750px;
+    height: 600px;
+    background-color: rgb(237, 233, 15);
+    position: fixed;
+    left: 25%;
+    bottom: 10px;
+    position: relative;
+}
+
+.chipslot {
+    border: solid 1px black;
+    width: 80px;
+    height: 80px;
+    background-color: rgb(114, 113, 117);
+    border-radius: 50%;
+    margin: 9px;
+    position: relative;
+    left: 30px;
+}
+
+#column1 {
+    float: left;
+    right: 100px;
+}
+
+#column2 {
+    float: left;
+    right: 100px;
+}
+
+#column3 {
+    float: left;
+    right: 100px;
+}
+
+#column4 {
+    float: left;
+    right: 100px;
+}
+
+#column5 {
+    float: left;
+    right: 100px;
+}
+
+#column6 {
+    float: left;
+    right: 100px;
+}
+
+#column7 {
+    float: left;
+    right: 100px;
+}
+
+.are-you-sure {
+    text-align: center;
+    background-color: rgb(176, 49, 81);
+    border: 3px solid black;
+    z-index: 1;
+    position: fixed;
+    width: 400px;
+    height: 400px;
+    left: 36%;
+    bottom: 30%;
+    /* display: none; */
+  }
