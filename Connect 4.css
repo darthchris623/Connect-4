@@ -6,10 +6,6 @@ button {
     cursor: pointer;
 }
 
-.chipslot {
-    cursor: pointer;
-}
-
 #new-game-button {
     position: relative;
     top: 12px;
@@ -35,6 +31,12 @@ button {
     margin: 9px;
     position: relative;
     left: 30px;
+    cursor: pointer;
+}
+
+#column0 {
+    float: left;
+    right: 100px;
 }
 
 #column1 {
@@ -66,21 +68,3 @@ button {
     float: left;
     right: 100px;
 }
-
-#column7 {
-    float: left;
-    right: 100px;
-}
-
-.are-you-sure {
-    text-align: center;
-    background-color: rgb(176, 49, 81);
-    border: 3px solid black;
-    z-index: 1;
-    position: fixed;
-    width: 400px;
-    height: 400px;
-    left: 36%;
-    bottom: 30%;
-    /* display: none; */
-  }
