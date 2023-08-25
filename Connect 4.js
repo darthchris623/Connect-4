@@ -13,10 +13,6 @@ const endButton = document.createElement('button');
 const whosTurn = document.createElement('h3'); // Keeps track of who's turn it is.
 // Start-new-game function
 function startNewGame() {
-    redPlayer = 'Red';
-    bluePlayer = 'Blue';
-    playersTurn = bluePlayer;
-    winner = null;
     gameOver = false;
     const gameBoard = document.createElement('div');
     whosTurn.innerText = `It's ${playersTurn}'s turn.`;
@@ -162,10 +158,12 @@ function checkMatch() {
 // End game function
 function endOfGame(r, c) {
     if (gameBoardArray[r][c] == 1) {
-        console.log('Red wins');
+        winner = redPlayer;
+        document.querySelector('h3').innerText = `${winner} wins the game!`
     }
     else if (gameBoardArray[r][c] == 2) {
-        console.log('Blue wins');
+        winner = bluePlayer;
+        document.querySelector('h3').innerText = `${winner} wins the game!`
     }
     gameOver = true;
 };
