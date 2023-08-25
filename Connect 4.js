@@ -161,7 +161,7 @@ function checkMatch() {
 
 // End game function
 function endOfGame(r, c) {
-    if (gameBoardArray[r][c] = 1) {
+    if (gameBoardArray[r][c] == 1) {
         console.log('Red wins');
     }
     else if (gameBoardArray[r][c] == 2) {
