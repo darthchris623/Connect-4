@@ -10,96 +10,162 @@ startButton.addEventListener('click', startNewGame);
 // End button added dynamically via JS DOM manipulation
 // but not visible until you press the "start game button".
 const endButton = document.createElement('button');
-
+const whosTurn = document.createElement('h3'); // Keeps track of who's turn it is.
 // Start-new-game function
 function startNewGame() {
-    console.log('New game has begun');
+    redPlayer = 'Red';
+    bluePlayer = 'Blue';
+    playersTurn = bluePlayer;
+    winner = null;
+    gameOver = false;
     const gameBoard = document.createElement('div');
-    gameBoard.setAttribute('id', 'gameboard');
-    document.body.append(gameBoard);
-    for (let c = 1; c < 8; c++){
+    whosTurn.innerText = `It's ${playersTurn}'s turn.`;
+    for (let c = 0; c < 7; c++) {
         const column = document.createElement('div') // Creates each column
         column.setAttribute('id', `column${c}`)
-        for (let r = 1; r < 7; r++){ // Creates each row for each column
+        for (let r = 0; r < 6; r++) { // Creates each row for each column
             const chipSlots = document.createElement('div'); // creates the slots for the black and red chips
             chipSlots.setAttribute('class', 'chipslot');
-            chipSlots.setAttribute('name', `r${r}c${c}`);
-            chipSlots.addEventListener('click', function (event) {
-                console.log(event.target);
-                console.log(`r${r}c${c}`);
-            });
+            chipSlots.setAttribute('id', `${r}-${c}`);
+            chipSlots.addEventListener('click', makeYourMove);
             column.append(chipSlots);
             gameBoard.append(column);
         };
+        gameBoard.setAttribute('id', 'gameboard');
+        document.body.append(gameBoard);
+        document.body.append(whosTurn);
+        startButton.remove();
+        endButton.setAttribute('id', 'end-game-button');
+        endButton.innerText = 'Quit current game';
+        document.body.append(endButton);
     };
-    startButton.remove();
-    endButton.setAttribute('id', 'end-game-button');
-    endButton.innerText = 'Quit current game';
-    document.body.append(endButton);
 };
 
 // End game button
 endButton.addEventListener('click', function () {
+    // Alert: OK to start over
     if (confirm('Are you sure you want to quit?')) {
-        // End of game
-        console.log('Game over.');
     }
+    // Keep playing
     else {
-        // Continue playing
-        console.log('Keep playing');
         return
     }
     const gameBoard = document.getElementById('gameboard');
-    // console.log('Game over');
     gameBoard.remove();
     endButton.remove();
+    for (let r = 0; r < gameBoardArray.length; r++){ // Resets the gameBoardArray when button is pushed
+        for (let c = 0; c < gameBoardArray[r].length; c++){
+            gameBoardArray[r][c] = 0;
+        }
+    }
+    bottomUp = [5, 5, 5, 5, 5, 5, 5];
     document.body.append(startButton);
-    // const areYouSure = document.createElement('div')
-    // const newGame = document.createElement('div'); // div for new button
-    // const newGameButton = document.createElement('button'); // creates new button element
-    // const header = document.createElement('h1');
-    // header.innerText = 'Are you REALLY sure you want to quit?'
-    // newGame.setAttribute('id', 'new-game');
-    // newGameButton.innerText = 'Yes, I want to quit and start a new game.';
-    // newGameButton.setAttribute('id', 'new-game-button');
-    // areYouSure.classList = 'are-you-sure';
-    // areYouSure.style.zIndex = 1; // places div above the game board
-    // newGameButton.addEventListener('click', endGame);
-    // areYouSure.append(header);
-    // newGame.append(newGameButton);
-    // areYouSure.append(newGame);
 });
 
+// JS gameboard keeps track of red and blue chips with the numbers 1 and 2 respectively.
+let gameBoardArray = [
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0]
+];
+let bottomUp = [5, 5, 5, 5, 5, 5, 5]; // This will fill the bottom chipslot first
 
-
-// End game function
-// function endGame() {
-//     const newGameButton = document.getElementsByClassName('are-you-sure')
-//     const gameBoard = document.getElementById('gameboard');
-//     console.log('Game over');
-//     gameBoard.remove();
-//     endButton.remove();
-//     document.body.append(startButton);
-//     newGameButton.addEventListener('click', function () {
-//         areYouSure.remove();
-//     });
-// };
-
-
-// function endOfGame() {
-//     const gameWon = document.createElement('div'); // victory notification div
-//     const newGame = document.createElement('div'); // div for new button
-//     const newGameButton = document.createElement('button'); // creates new button element
-//     const header = document.createElement('h1');
-//     const caption = document.createElement('p');
-    
-// };
-
-let redPlayer = 'R';
-let blackPlayer = 'B';
-let playersTurn = 'R'
+// Logic for player's moves
+let redPlayer = 'Red';
+let bluePlayer = 'Blue';
+let playersTurn = bluePlayer; // Starting player
+let winner; // Not used yet
+let gameOver = false;
 
 function makeYourMove(event) {
     const clickedSlot = event.target;
+    if (gameOver === true) { // When true, no more moves are allowed
+        return;
+    }
+    let coords = clickedSlot.id.split('-'); // example [1, 4]
+    let r = parseInt(coords[0]); // 1
+    let c = parseInt(coords[1]); // 4
+    
 
+    r = bottomUp[c]; // Bottom chipslot first. This code redefines the r coordinate variable. [1, 4] becomes [5, 4],
+    if (r < 0) { // This code prevents filling the column more.
+        return;
+    }
+    // console.log(r, c); // Checks to see if the coords are being accessed
+    gameBoardArray[r][c] = playersTurn
+    const chipslot = document.getElementById(r.toString() + '-' + c.toString()); // id = 1-4
+    // console.log(chipslot); // Checks the actual chip coordinates
+    if (playersTurn === redPlayer) {
+        chipslot.style.backgroundColor = 'red';
+        playersTurn = bluePlayer;
+        gameBoardArray[r][c] = 1;
+        // clickedSlot.innerText = 'RED'
+        chipslot.removeEventListener('click', makeYourMove);
+    }
+    else {
+        chipslot.style.backgroundColor = 'blue';
+        playersTurn = redPlayer;
+        gameBoardArray[r][c] = 2;
+        // clickedSlot.innerText = 'BLUE'
+        chipslot.removeEventListener('click', makeYourMove);
+    }
+    whosTurn.innerText = `It's ${playersTurn}'s turn.`;
+    r -= 1; // updating row height for the column. Same column will be [4, 4].
+    bottomUp[c] = r; // updating the array
+    checkMatch();
+};
+
+function checkMatch() {
+    for (let r = 0; r < gameBoardArray.length; r++){
+        for (let c = 0; c < gameBoardArray[r].length; c++){
+            if (gameBoardArray[r][c] != 0) {
+                // Check horizontally for 4 in a row
+                if (gameBoardArray[r][c] == gameBoardArray[r][c + 1] &&
+                    gameBoardArray[r][c + 1] == gameBoardArray[r][c + 2] &&
+                    gameBoardArray[r][c + 2] == gameBoardArray[r][c + 3]) {
+                    console.log(' horizontal winner');
+                    endOfGame(r, c);
+                    return;
+                }
+                // Check vertically for 4 in a row
+                if (gameBoardArray[r][c] == gameBoardArray[r - 1][c] &&
+                    gameBoardArray[r - 1][c] == gameBoardArray[r - 2][c] &&
+                    gameBoardArray[r - 2][c] == gameBoardArray[r - 3][c]) {
+                    console.log('vertical winner');
+                    endOfGame(r, c);
+                    return;
+                }
+                // Check diagonally left for 4 in a row
+                if (gameBoardArray[r][c] == gameBoardArray[r - 1][c - 1] &&
+                    gameBoardArray[r - 1][c - 1] == gameBoardArray[r - 2][c - 2] &&
+                    gameBoardArray[r - 2][c - 2] == gameBoardArray[r - 3][c - 3]) {
+                    console.log('diagonal left winner');
+                    endOfGame(r, c);
+                    return;
+                }
+                // Check diagonally right for 4 in a row
+                if (gameBoardArray[r][c] == gameBoardArray[r - 1][c + 1] &&
+                    gameBoardArray[r - 1][c + 1] == gameBoardArray[r - 2][c + 2] &&
+                    gameBoardArray[r - 2][c + 2] == gameBoardArray[r - 3][c + 3]) {
+                    console.log('diagonal right winner');
+                    endOfGame(r, c);
+                    return;
+                }
+            }
+        }
+    }
+};
+
+// End game function
+function endOfGame(r, c) {
+    if (gameBoardArray[r][c] = 1) {
+        console.log('Red wins');
+    }
+    else if (gameBoardArray[r][c] == 2) {
+        console.log('Blue wins');
+    }
+    gameOver = true;
 };
