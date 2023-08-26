@@ -115,26 +115,38 @@ function makeYourMove(event) {
 };
 
 function checkMatch() {
-    for (let r = 0; r < gameBoardArray.length; r++){
-        for (let c = 0; c < gameBoardArray[r].length; c++){
+    // Checking horizontally for 4 in a row
+    for (let r = 0; r < 6; r++){
+        for (let c = 0; c < 7; c++){
             if (gameBoardArray[r][c] != 0) {
-                // Check horizontally for 4 in a row
                 if (gameBoardArray[r][c] == gameBoardArray[r][c + 1] &&
                     gameBoardArray[r][c + 1] == gameBoardArray[r][c + 2] &&
                     gameBoardArray[r][c + 2] == gameBoardArray[r][c + 3]) {
-                    console.log(' horizontal winner');
+                    console.log('horizontal winner');
                     endOfGame(r, c);
                     return;
                 }
-                // Check vertically for 4 in a row
-                if (gameBoardArray[r][c] == gameBoardArray[r - 1][c] &&
-                    gameBoardArray[r - 1][c] == gameBoardArray[r - 2][c] &&
-                    gameBoardArray[r - 2][c] == gameBoardArray[r - 3][c]) {
+            }
+        }
+    }
+    // Checking vertically for 4 in a row
+    for (let r = 0; r < 3; r++){
+        for (let c = 0; c < 7; c++){
+            if (gameBoardArray[r][c] != 0){
+                if (gameBoardArray[r][c] == gameBoardArray[r + 1][c] &&
+                    gameBoardArray[r + 1][c] == gameBoardArray[r + 2][c] &&
+                    gameBoardArray[r + 2][c] == gameBoardArray[r + 3][c]) {
                     console.log('vertical winner');
                     endOfGame(r, c);
                     return;
                 }
-                // Check diagonally left for 4 in a row
+            }
+        }
+    }
+    // Check diagonally up-left for 4 in a row
+    for (let r = 3; r < 6; r++){
+        for (let c = 0; c < 7; c++){
+            if (gameBoardArray[r][c] != 0){
                 if (gameBoardArray[r][c] == gameBoardArray[r - 1][c - 1] &&
                     gameBoardArray[r - 1][c - 1] == gameBoardArray[r - 2][c - 2] &&
                     gameBoardArray[r - 2][c - 2] == gameBoardArray[r - 3][c - 3]) {
@@ -142,7 +154,13 @@ function checkMatch() {
                     endOfGame(r, c);
                     return;
                 }
-                // Check diagonally right for 4 in a row
+            }
+        }
+    }
+    //Checking diagonally up-right
+    for (let r = 3; r < 6; r++){
+        for (let c = 0; c < 7; c++){
+            if (gameBoardArray[r][c] != 0){
                 if (gameBoardArray[r][c] == gameBoardArray[r - 1][c + 1] &&
                     gameBoardArray[r - 1][c + 1] == gameBoardArray[r - 2][c + 2] &&
                     gameBoardArray[r - 2][c + 2] == gameBoardArray[r - 3][c + 3]) {
