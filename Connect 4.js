@@ -76,7 +76,8 @@ let playersTurn = bluePlayer; // Starting player
 let winner; // Not used yet
 let gameOver = false;
 
-function makeYourMove() {
+function makeYourMove(event) {
+    const clickedSlot = event.target;
     if (gameOver === true) { // When true, no more moves are allowed
         return;
     }
